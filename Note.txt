@@ -1,0 +1,76 @@
+1. Router 
+    
+    - Muốn tạo 1 custom router -> \Providers\RouteServiceProvider.php
+    - Middlware -> Định nghĩa trong \Kernel.php
+    - throttle: Số request được gửi đi trong 60s.
+    Route::group(['middleware' => 'throttle:100,1'], function () {});
+    - 5 phương thức RESTFul API: 
+        + GET (select)
+        + POST (create)
+        + PUT (update)
+        + DELETE(delete)
+    - Blade template: 
+        + GET
+        + POST
+        + MATCH = GET + POST
+
+2. Kiến trúc
+
+Controller -> Business logic -> Nhận data từ request sau khi đã validated
+
+    Services -> XỬ lý logic -> Nhận data thô từ controller
+
+    Repositories -> Tương tác với Model (Database) -> Eloquent + Query Builder
+
+Model -> data access -> Ánh xạ từ bảng database + chuẩn hóa dữ liệu cho các trường của database + Ràng buộc
+    
+    + ->uses->address()
+
+    product->user->address -->
+
+    + function address() {
+        return city . provinces . wards;
+    }
+
+Thuật ngữ
+    Service container ~ IoC -> binding và singleton 
+    Service Provider -> những ứng dung bên thứ 3 thì đều được đăng ký ở đây -> config/app.php
+    Queue -> cron, batch -> first in first out -> n mail chia ra để gửi trong 1 Queue -> chunk -> ...
+    Facade
+
+-----------------------------------------------------------------------------------
+
+    - Dependency injection
+    - Relationship
+    - Eloquent, Query Builder
+    - Queue -> cron, batch -> first in first out -> n mail chia ra để gửi trong 1 Queue -> chunk -> ...
+    - Design pattern
+
+-----------------------------------------------------------------------------------
+
+Middleware trong Laravel?
+-> Ngăn chặn sử dụng Router hay Group Router
+
+Router (Request) -> Truy cập -> Gửi request
+
+    Middleware -> Trung gian ngăn chặn sự kiện xảy ra -> Kiểm tra có đủ quyền để truy cập
+        + Nếu có thì sẽ vào -> Validate Request -> Vào Controller nhận dữ liệu.
+        + Nếu không trả về lỗi
+
+Controller (Response)
+
+
+Controller
+    + Nếu trả thẳng dữ liệu -> Set $this->response
+    + Nếu xử lý dữ liệu -> Resource toArray
+
+    Services
+        + Tạo class và gọi trực tiếp theo Dependency
+        + Interface -> Tạo class
+
+    Repositories
+        + Tạo class và gọi trực tiếp theo Dependency
+        + Interface -> Tạo class
+
+Model
+
